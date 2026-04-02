@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>카페인 계산기</title>
+  <meta charset="utf-8">
+</head>
+<body>
+  <h1>☕ 카페인 섭취 계산기</h1>
+
+  <p>커피 몇 잔 마셨나요?</p>
+  <input type="number" id="coffee" value="0">
+
+  <button onclick="calc()">계산하기</button>
+
+  <h2 id="result"></h2>
+
+  <script>
+    function calc() {
+      let coffee = document.getElementById("coffee").value;
+      let caffeine = coffee * 100;
+
+      document.getElementById("result").innerText =
+        "총 카페인: " + caffeine + " mg";
+    }
+  </script>
+
+  <br><br>
+  <a href="index.html">← 메인으로</a>
+</body>
+</html>
