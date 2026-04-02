@@ -3,28 +3,81 @@
 <head>
   <title>카페인 계산기</title>
   <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 30px;
+      background: #f5f7fa;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h1>☕ 카페인 섭취 계산기</h1>
 
-  <p>커피 몇 잔 마셨나요?</p>
-  <input type="number" id="coffee" value="0">
+<div class="box">
+  <h1>☕ 카페인 계산기</h1>
 
+  <p>체중 (kg)</p>
+  <input type="number" id="weight" placeholder="예: 70">
+
+  <p>음료 선택</p>
+  <select id="drink">
+    <option value="80">아메리카노 (80mg)</option>
+    <option value="150">에너지 드링크 (150mg)</option>
+    <option value="40">콜라 (40mg)</option>
+  </select>
+
+  <p>몇 잔?</p>
+  <input type="number" id="count" value="1">
+
+  <br><br>
   <button onclick="calc()">계산하기</button>
 
   <h2 id="result"></h2>
+  <p id="warning"></p>
 
-  <script>
-    function calc() {
-      let coffee = document.getElementById("coffee").value;
-      let caffeine = coffee * 100;
+</div>
 
-      document.getElementById("result").innerText =
-        "총 카페인: " + caffeine + " mg";
-    }
-  </script>
+<script>
+function calc() {
+  let weight = document.getElementById("weight").value;
+  let caffeinePerDrink = document.getElementById("drink").value;
+  let count = document.getElementById("count").value;
 
-  <br><br>
-  <a href="index.html">← 메인으로</a>
+  let total = caffeinePerDrink * count;
+  let safe = weight * 3; // 권장 최대 (mg)
+
+  document.getElementById("result").innerText =
+    "총 카페인: " + total + " mg";
+
+  if (total > safe) {
+    document.getElementById("warning").innerText =
+      "⚠️ 권장 섭취량 초과!";
+  } else {
+    document.getElementById("warning").innerText =
+      "✅ 적정 섭취 수준입니다.";
+  }
+}
+</script>
+
+<br><br>
+<a href="index.html">← 메인으로</a>
+
 </body>
 </html>
