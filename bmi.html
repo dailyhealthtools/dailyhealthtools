@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BMI 계산기</title>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f7fa;
+      padding: 30px;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>📊 BMI 계산기</h1>
+
+  <p>키 (cm)</p>
+  <input type="number" id="height">
+
+  <p>몸무게 (kg)</p>
+  <input type="number" id="weight">
+
+  <br><br>
+  <button onclick="calc()">계산하기</button>
+
+  <h2 id="result"></h2>
+</div>
+
+<script>
+function calc() {
+  let h = document.getElementById("height").value / 100;
+  let w = document.getElementById("weight").value;
+
+  let bmi = w / (h * h);
+  bmi = bmi.toFixed(1);
+
+  let status = "";
+
+  if (bmi < 18.5) status = "저체중";
+  else if (bmi < 23) status = "정상";
+  else if (bmi < 25) status = "과체중";
+  else status = "비만";
+
+  document.getElementById("result").innerText =
+    "BMI: " + bmi + " (" + status + ")";
+}
+</script>
+
+<br><br>
+<a href="index.html">← 메인으로</a>
+
+</body>
+</html>
