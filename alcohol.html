@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>알코올 혈중농도 계산기 | Daily Health Tools</title>
+  <meta name="description" content="음주 후 혈중 알코올 농도(BAC)를 계산해보세요. 체중과 음주량을 기반으로 시간에 따른 감소 그래프를 제공합니다.">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: Arial; max-width: 600px; margin: auto; padding: 20px; }
+    input, select, button { padding: 10px; margin: 5px 0; width: 100%; }
+    canvas { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>🍺 알코올 혈중농도 계산기</h1>
+
+<label>체중 (kg)</label>
+<input type="number" id="weight" placeholder="예: 70">
+
+<label>성별</label>
+<select id="gender">
+  <option value="male">남성</option>
+  <option value="female">여성</option>
+</select>
+
+<label>마신 술의 양 (잔)</label>
+<input type="number" id="drinks" placeholder="예: 3">
+
+<button onclick="calculate()">계산하기</button>
+
+<h2 id="result"></h2>
+
+<canvas id="chart"></canvas>
+
+<hr>
+
+<h2>혈중 알코올 농도(BAC)란?</h2>
+<p>
+BAC(Blood Alcohol Concentration)는 혈액 내 알코올 농도를 의미하며,
+음주 후 신체에 얼마나 알코올이 남아있는지를 나타내는 지표입니다.
+</p>
+
+<p>
+일반적으로 시간당 약 0.015% 정도 감소하며, 개인의 체중, 성별,
+대사 능력에 따라 차이가 발생할 수 있습니다.
+</p>
+
+<p>
+이 계산기는 참고용이며 실제 운전 가능 여부를 판단하는 기준이 될 수 없습니다.
+</p>
+
+<script>
+let chart;
+
+function calculate() {
+  const weight = parseFloat(document.getElementById("weight").value);
+  const drinks = parseFloat(document.getElementById("drinks").value);
+  const gender = document.getElementById("gender").value;
+
+  if (!weight || !drinks) {
+    alert("값을 입력해주세요");
+    return;
+  }
+
+  const alcoholPerDrink = 14; // g
+  const bodyWater = gender === "male" ? 0.68 : 0.55;
+
+  let bac = (drinks * alcoholPerDrink) / (weight * bodyWater * 1000) * 100;
+
+  document.getElementById("result").innerText =
+    "현재 추정 BAC: " + bac.toFixed(3) + "%";
+
+  // 시간에 따른 감소 그래프
+  const labels = [];
+  const data = [];
+
+  let current = bac;
+
+  for (let t = 0; t <= 12; t++) {
+    labels.push(t + "h");
+    data.push(Math.max(current, 0));
+    current -= 0.015;
+  }
+
+  if (chart) chart.destroy();
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'BAC (%)',
+        data: data,
+        borderWidth: 2,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+}
+</script>
+
+</body>
+</html>
