@@ -66,22 +66,33 @@ let chart;
 
 function calculate() {
   const weight = parseFloat(document.getElementById("weight").value);
-  const drinks = parseFloat(document.getElementById("drinks").value);
   const gender = document.getElementById("gender").value;
 
-  if (!weight || !drinks) {
-    alert("값을 입력해주세요");
+  const soju = parseFloat(document.getElementById("soju").value) || 0;
+  const beer = parseFloat(document.getElementById("beer").value) || 0;
+  const whiskey = parseFloat(document.getElementById("whiskey").value) || 0;
+  const makgeolli = parseFloat(document.getElementById("makgeolli").value) || 0;
+
+  if (!weight) {
+    alert("체중을 입력해주세요");
     return;
   }
 
-  const alcoholPerDrink = 14; // g
+  // 각 주종 알코올 g
+  const alcohol =
+    (soju * 6.7) +
+    (beer * 14) +
+    (whiskey * 9.5) +
+    (makgeolli * 9.5);
+
   const bodyWater = gender === "male" ? 0.68 : 0.55;
 
-  let bac = (drinks * alcoholPerDrink) / (weight * bodyWater * 1000) * 100;
+  let bac = (alcohol / (weight * bodyWater * 1000)) * 100;
 
   document.getElementById("result").innerText =
     "현재 추정 BAC: " + bac.toFixed(3) + "%";
 
+  
   // 시간에 따른 감소 그래프
   const labels = [];
   const data = [];
